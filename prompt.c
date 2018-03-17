@@ -23,30 +23,23 @@ int prompt(void)
 	pid_t pid = 0;
 	char *command, **token;
 
-	write(STDOUT_FILENO, "Kev Mel Shell$ ", 15);
 	do {
+		write(STDOUT_FILENO, "Kev Mel Shell$ ", 15);
 		i = _getline(&command, &buffsize, stdin);
 		while (command[n] != '\n')
 			n++;
 		command[n] = '\0';
 		token = _strtok(command, " ");
-		if (fork() == 0)
+		pid = fork();
+		if (pid == 0)
 		{
-			printf("I am child\n");
+
 			exec(token);
 		}
 		else
 		{
-			printf("I am parent\n");
 			wait(&status);
-			while (token[n] != NULL)
-			{
-				free(token[n]);
-				n++;
-			}
-			free(token);
-			free(command);
 		}
-	} while (i > 0);
+	} while (0);
 	return (i);
 }
