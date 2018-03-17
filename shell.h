@@ -18,5 +18,6 @@ void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
 char **_strtok(char *str, char *delm);
 int prompt(void);
 char *_strcat(char *dest, char *src);
+char *_strdup(char *str);
 
 #endif
