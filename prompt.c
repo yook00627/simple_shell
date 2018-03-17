@@ -40,6 +40,6 @@ int prompt(void)
 		{
 			wait(&status);
 		}
-	} while (0);
+	} while (i > 0);
 	return (i);
 }
