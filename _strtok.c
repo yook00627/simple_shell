@@ -13,15 +13,31 @@ int t_strlen(char *str, int pos, char delm)
 	return (i);
 }
 
+int t_size(char *str, char delm)
+{
+	int i = 0, count = 0;
+
+	while (str[i] != '\0')
+	{
+		if (str[i] == delm)
+			count++;
+		i++;
+	}
+	return (count);
+}
+
 
 char **_strtok(char *str, char *delm)
 {
-	int buffsize = 8, p = 0, si = 0, i = 0, len = 0;
+	int buffsize = 0, p = 0, si = 0, i = 0, len = 0, se = 0;
 	char **toks, d_ch;
 
-	toks = malloc(sizeof(char *) * buffsize);
 	d_ch = delm[0];
-	while (str[si] != '\0')
+	buffsize = t_size(str, d_ch);
+	toks = malloc(sizeof(char *) * (buffsize + 2));
+	while (str[se] != '\0')
+		se++;
+	while (si <= se)
 	{
 		len = t_strlen(str, si, d_ch);
 		toks[p] = malloc(sizeof(char) * (len + 1));
@@ -37,12 +53,6 @@ char **_strtok(char *str, char *delm)
 		if (str[si + 1] != d_ch)
 			p++;
 		si++;
-		if (p >= buffsize)
-		{
-			toks = _realloc(toks, buffsize,
-					sizeof(char *) * (buffsize << 1));
-			buffsize = buffsize << 1;
-		}
 	}
 	toks[p] = NULL;
 	return toks;
