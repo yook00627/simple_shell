@@ -16,12 +16,15 @@ int prompt(void)
 
 	do {
 		write(STDOUT_FILENO, "Kev Mel Shell$ ", 15);
+		command = NULL;
 		i = _getline(&command, &buffsize, stdin);
 		n = 0;
 		while (command[n] != '\n')
 			n++;
 		command[n] = '\0';
 		token = _strtok(command, " ");
+		if (command != NULL)
+			free(command);
 		pid = fork();
 		if (pid == 0)
 		{
