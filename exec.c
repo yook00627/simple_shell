@@ -7,9 +7,17 @@
  */
 int exec(char **s)
 {
-	if (execve(s[0], s, NULL) == -1)
+	if (access(s[0], F_OK) == 0)
 	{
-		perror("Error:");
+		if (execve(s[0], s, NULL) == -1)
+			perror("Error:");
+	}
+	else
+	{
+		if (execve(_which(s[0]), s, NULL) == -1)
+		{
+			perror("Error:");
+		}
 	}
 	return (0);
 }

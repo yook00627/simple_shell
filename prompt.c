@@ -1,14 +1,5 @@
 #include "shell.h"
 
-size_t _getline(char **str, size_t *size, FILE *stream)
-{
-	size_t i = 0;
-
-	i = getline(str, size, stdin);
-	/*null check needed*/
-	return (i);
-}
-
 /**
  * prompt -
  *
@@ -26,6 +17,7 @@ int prompt(void)
 	do {
 		write(STDOUT_FILENO, "Kev Mel Shell$ ", 15);
 		i = _getline(&command, &buffsize, stdin);
+		n = 0;
 		while (command[n] != '\n')
 			n++;
 		command[n] = '\0';
@@ -41,5 +33,5 @@ int prompt(void)
 			wait(&status);
 		}
 	} while (i > 0);
-	return (i);
+	return (0);
 }

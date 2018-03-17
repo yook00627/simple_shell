@@ -94,7 +94,8 @@ char *_which(char *str)
 	free(toks);
 	return (NULL);
 }
-
+/*test main*/
+/*
 void main (void)
 {
 	char *str;
@@ -103,3 +104,4 @@ void main (void)
 	printf("%s\n", str);
 	free(str);
 }
+*/
