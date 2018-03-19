@@ -21,5 +21,6 @@ char *_strcat(char *dest, char *src);
 char *_strdup(char *str);
 char *_which(char *str);
 size_t _getline(char **str, size_t *size, FILE *stream);
+int _strcmp(char *s1, char *s2);
 
 #endif
