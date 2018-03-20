@@ -5,7 +5,7 @@
  *
  * Return: Always 0.
  */
-int exec(char **s)
+int exec(char **s, char **env)
 {
 	if (access(s[0], F_OK) == 0)
 	{
@@ -14,7 +14,7 @@ int exec(char **s)
 	}
 	else
 	{
-		if (execve(_which(s[0]), s, NULL) == -1)
+		if (execve(_which(s[0], env), s, NULL) == -1)
 		{
 			perror("Error:");
 		}

@@ -35,15 +35,14 @@ char *c_strdup(char *str, int cs)
 }
 
 
-char *path(char *str)
+char *path(char *str, char **env)
 {
 	int i = 0, si = 0, cs = 0;
-	extern char **environ;
 
-	while (environ[i] != NULL)
+	while (env[i] != NULL)
 	{
 		si = 0;
-		while (environ[i][si] == str[si])
+		while (env[i][si] == str[si])
 		{
 			si++;
 		}
@@ -56,18 +55,18 @@ char *path(char *str)
 	while (str[cs] != '\0')
 		cs++;
 	cs++;
-	return (c_strdup(environ[i], cs));
+	return (c_strdup(env[i], cs));
 }
 
 
-char *_which(char *str)
+char *_which(char *str, char **env)
 {
-	char *env, *cat, **toks;
+	char *pth, *cat, **toks;
 	int i = 0, f = 0;
 
-	env = path("PATH");
-	toks = _strtok(env, ":");
-	free(env);
+	pth = path("PATH", env);
+	toks = _strtok(pth, ":");
+	free(pth);
 	while (toks[i] != NULL)
 	{
 		cat = _strdup(toks[i]);
@@ -92,7 +91,7 @@ char *_which(char *str)
 		f++;
 	}
 	free(toks);
-	return (NULL);
+	return (str);
 }
 /*test main*/
 /*
