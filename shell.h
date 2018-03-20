@@ -14,7 +14,7 @@
 #include <signal.h>
 
 void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
-size_t _getline(char **str, size_t *size, FILE *stream);
+size_t _getline(char **str);
 int prompt(int ac, char **av, char **env);
 char **_strtok(char *str, char *delm);
 char *_strcat(char *dest, char *src);
