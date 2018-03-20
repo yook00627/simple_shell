@@ -9,19 +9,19 @@
  */
 int prompt(int ac, char **av, char **env)
 {
-	size_t buffsize = 0, i = 0, n = 0, f = 0;
+	size_t i = 0, n = 0, f = 0;
 	int status = 0;
 	pid_t pid = 0;
 	char *command, **token;
 
+	(void)ac;
+	(void)av;
 	do {
-		if (av[0] == NULL)
-			exit(0);
 		write(STDOUT_FILENO, "Kev Mel Shell$ ", 15);
 		command = NULL;
 		i = 0;
-		i = _getline(&command, &buffsize, stdin);
-		if (*command == 0)
+		i = _getline(&command);
+		if (i == 0)
 		{
 			free(command);
 			exit(0);
