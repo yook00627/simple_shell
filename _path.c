@@ -1,7 +1,7 @@
 #include "shell.h"
 
 /**
- * c_strdup - custom string duplication; excludes duplication of beginning bytes
+ * c_strdup - custom string duplication; excludes beginning bytes
  * @str: string to duplicate (e.g. environmental variable PATH=/bin:/bin/ls)
  * @cs: number of bytes to exclude (e.g. excludes "PATH=")
  * Return: string (e.g. /bin:/bin/ls)
@@ -36,7 +36,7 @@ char *c_strdup(char *str, int cs)
 /**
  * path - finds and returns a copy of the requested environmental variable
  * @str: string to store it in
- * @cs: entire set of environmental variables
+ * @env: entire set of environmental variables
  * Return: copy of requested environmental variable
  */
 char *path(char *str, char **env)
@@ -48,7 +48,7 @@ char *path(char *str, char **env)
 		j = 0;
 		while (env[i][j] == str[j]) /* find desired env variable */
 			j++;
-		if(str[j] == '\0')
+		if (str[j] == '\0')
 			break;
 		i++;
 	}

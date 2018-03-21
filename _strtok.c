@@ -39,7 +39,7 @@ int t_size(char *str, char delm)
 }
 
 /**
- * _strok - tokenizes a string and returns an array of tokens
+ * _strtok - tokenizes a string and returns an array of tokens
  * @str: user's command typed into shell
  * @delm: delimeter (e.g. " ");
  * Return: an array of tokens (e.g. {"ls", "-l", "/tmp"}

@@ -44,24 +44,3 @@ size_t _getline(char **str)
 	}
 	return (size);
 }
-
-/*
-void main(void)
-{
-	char *s = NULL;
-
-	i = _getline(&s);
-	printf("%s\n", s);
-}
-*/
-
-/*
-size_t _getline(char **str, size_t *size, FILE *stream)
-{
-	size_t i = 0;
-
-	i = getline(str, size, stdin);
-
-	return (i);
-}
-*/

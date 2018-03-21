@@ -5,7 +5,7 @@
 .SH SYNOPSIS
 .B Simple Shell
 .SH DESCRIPTION
-Simple shell is one version of a command language interpreter that executes commands read from the standard input. It's functionality is limited to certain shell builtin functions found in the environmental variable 
+Simple shell is one version of a command language interpreter that executes commands read from the standard input. It's functionality is limited to certain shell builtin functions found in the environmental variable
 .I PATH.
 It does not yet handle piping, redirection, pattern matching, variable expansions, and more extra functions.
 .SS Invocation

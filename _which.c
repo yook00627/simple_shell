@@ -44,15 +44,3 @@ char *_which(char *str, char **env)
 	free(toks);
 	return (str); /* return random string if not found; won't pass execve */
 }
-
-/*test main*/
-/*
-void main (void)
-{
-	char *str;
-
-	str = _which("ls");
-	printf("%s\n", str);
-	free(str);
-}
-*/

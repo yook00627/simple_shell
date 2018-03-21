@@ -80,7 +80,7 @@ int prompt(int ac, char **av, char **env)
 		{
 			wait(&status);
 			f = 0;
-			while(token[f] != NULL)
+			while (token[f] != NULL)
 			{
 				free(token[f]);
 				f++;
