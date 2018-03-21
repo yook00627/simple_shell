@@ -25,5 +25,6 @@ void __exit(char **s);
 int exec(char *argv[], char **env);
 int _env(char **str, char **env);
 char *_strcpy(char *dest, char *src);
+char *path(char *str, char **env);
 
 #endif
