@@ -1,5 +1,13 @@
 #include "shell.h"
 
+
+void ctrl_c(int n)
+{
+	(void)n;
+	write(STDOUT_FILENO, "\nKev Mel Shell$ ", 16);
+
+}
+
 /**
  * prompt -
  *
@@ -17,13 +25,17 @@ int prompt(int ac, char **av, char **env)
 	(void)ac;
 	(void)av;
 	do {
-		write(STDOUT_FILENO, "Kev Mel Shell$ ", 15);
+		if (isatty(STDIN_FILENO))
+			write(STDOUT_FILENO, "Kev Mel Shell$ ", 15);
+		signal(SIGINT, ctrl_c);/*makes ctrl+c not work*/
 		command = NULL;
 		i = 0;
 		i = _getline(&command);
 		if (i == 0)
 		{
 			free(command);
+			if(isatty(STDIN_FILENO))
+				write(STDOUT_FILENO, "\n", 1);
 			exit(0);
 		}
 		n = 0;
@@ -41,7 +53,10 @@ int prompt(int ac, char **av, char **env)
 		if (command != NULL)
 			free(command);
 		if (_strcmp(token[0], "exit") == 0)
+		{
 			__exit(token);
+			continue;
+		}
 		if (_strcmp(token[0], "env") == 0)
 		{
 			_env(token, env);
