@@ -22,8 +22,13 @@ char *_strdup(char *str);
 int _strcmp(char *s1, char *s2);
 char *_which(char *str, char **env);
 void __exit(char **s);
-int exec(char *argv[], char **env);
+int _execve(char *argv[], char **env);
 int _env(char **str, char **env);
 char *_strcpy(char *dest, char *src);
+char *get_env(char *str, char **env);
+void _cd(char **str, char **env);
+int built_in(char **token, char **env);
+void non_interactive(char **env);
+char *ignore_space(char *str);
 
 #endif
