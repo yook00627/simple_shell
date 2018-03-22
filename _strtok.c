@@ -20,22 +20,22 @@ int t_strlen(char *str, int pos, char delm)
 }
 
 /**
- * t_size - returns number of tokens for mallocing
+ * t_size - returns number of delim
  * @str: user's command typed into shell
  * @delm: delimeter (e.g. " ");
  * Return: number of tokens
  */
 int t_size(char *str, char delm)
 {
-	int i = 0, num_toks = 0;
+	int i = 0, num_delm = 0;
 
 	while (str[i] != '\0')
 	{
 		if ((str[i] == delm) && (str[i + 1] != delm))
-			num_toks++;
+			num_delm++;
 		i++;
 	}
-	return (num_toks);
+	return (num_delm);
 }
 
 /**
@@ -52,7 +52,7 @@ char **_strtok(char *str, char *delm)
 	/* set variable to be delimeter character (" ") */
 	d_ch = delm[0];
 
-	/* malloc number of ptrs to store array of tokens, '\n', and NULL ptr */
+	/* malloc number of ptrs to store array of tokens, and NULL ptr */
 	buffsize = t_size(str, d_ch);
 	toks = malloc(sizeof(char *) * (buffsize + 2));
 	if (toks == NULL)

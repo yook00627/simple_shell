@@ -12,7 +12,7 @@ char *_which(char *str, char **env)
 	int i = 0, f = 0;
 
 	/* get and tokenize PATH directories, then free original string */
-	pth = path("PATH", env);
+	pth = get_env("PATH", env);
 	toks = _strtok(pth, ":");
 	free(pth);
 
