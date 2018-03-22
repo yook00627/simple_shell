@@ -32,11 +32,25 @@ int t_size(char *str, char delm)
 	while (str[i] != '\0')
 	{
 		if ((str[i] == delm) && (str[i + 1] != delm))
+		{
 			num_delm++;
+			/*checking if there only 1 command with spaces*/
+			if (num_delm == 1 && str[i + 1] == '\0')
+				num_delm--;
+		}
 		i++;
 	}
 	return (num_delm);
 }
+
+
+char *ignore_delm(char *str, char delm)
+{
+	while (*str == delm)
+		str++;
+	return (str);
+}
+
 
 /**
  * _strtok - tokenizes a string and returns an array of tokens
@@ -46,11 +60,13 @@ int t_size(char *str, char delm)
  */
 char **_strtok(char *str, char *delm)
 {
-	int buffsize = 0, p = 0, si = 0, i = 0, len = 0, se = 0;
-	char **toks, d_ch;
+	int buffsize = 0, p = 0, si = 0, i = 0, len = 0, se = 0, t = 0;
+	char **toks = NULL, d_ch;
 
 	/* set variable to be delimeter character (" ") */
 	d_ch = delm[0];
+	/*ignores all delims infront*/
+	str = ignore_delm(str, d_ch);
 
 	/* malloc number of ptrs to store array of tokens, and NULL ptr */
 	buffsize = t_size(str, d_ch);
@@ -64,25 +80,31 @@ char **_strtok(char *str, char *delm)
 	while (si < se)
 	{
 		/* malloc lengths for each token ptr in array */
-		len = t_strlen(str, si, d_ch);
-		toks[p] = malloc(sizeof(char) * (len + 1));
-		if (toks[p] == NULL)
-			return (NULL);
-		i = 0;
-		while ((str[si] != d_ch) &&
-		       (str[si] != '\0'))
+		if (str[si] != d_ch)
 		{
-			toks[p][i] = str[si];
-			i++;
-			si++;
+			len = t_strlen(str, si, d_ch);
+			toks[p] = malloc(sizeof(char) * (len + 1));
+			if (toks[p] == NULL)
+				return (NULL);
+			i = 0;
+			while ((str[si] != d_ch) &&
+			       (str[si] != '\0'))
+			{
+				toks[p][i] = str[si];
+				i++;
+				si++;
+			}
+			toks[p][i] = '\0'; /* null terminate at end*/
+			t++;
 		}
-		toks[p][i] = '\0'; /* null terminate each string in array */
 		/* handle repeated delimeters; increment ptr after ("ls __-l")*/
 		if (si < se && str[si + 1] != d_ch)
 			p++;
 		si++;
 	}
 	p++;
+	if (buffsize == 0) /*check if there is only 1 command*/
+		p = 1;
 	toks[p] = NULL; /* set last array ptr to NULL */
 	return (toks);
 }
