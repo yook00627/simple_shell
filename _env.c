@@ -6,27 +6,9 @@
  * @env: environmental variables
  * Return: 0 on success
  */
-int _env(char **str, char **env)
+int _env(char **str, list_t *env)
 {
-	int n = 0, c = 0;
-
-	while (str[n] != NULL) /* frees user input */
-	{
-		free(str[n]);
-		n++;
-	}
-	free(str);
-
-	n = 0;
-	while (env[n] != NULL) /* prints env */
-	{
-		c = 0;
-		while (env[n][c] != '\0')
-			c++;
-		write(STDOUT_FILENO, env[n], c);
-		write(STDOUT_FILENO, "\n", 1);
-		n++;
-	}
-
+	free_double_ptr(str); /* frees user input */
+	print_list(env); /* prints env */
 	return (0);
 }

@@ -11,9 +11,9 @@ char *c_ignore(char *str)
  * non_interactive -
  * @env: envrionmental variables
  */
-void non_interactive(char **env)
+void non_interactive(list_t *env)
 {
-	size_t i = 0, n = 0, f = 0;
+	size_t i = 0, n = 0;
 	int status = 0;
 	pid_t pid = 0;
 	char *command, *n_command, **n_line, **token;
@@ -51,21 +51,11 @@ void non_interactive(char **env)
 		{
 			wait(&status);
 			n++;
-			f = 0;
-			while (token[f] != NULL)
-			{
-				free(token[f]);
-				f++;
-			}
-			free(token);
+			free_double_ptr(token);
 		}
 	}
 	n = 0;
-	while (n_line[n] != NULL)
-	{
-		free(n_line[n]);
-		n++;
-	}
-	free(n_line);
+	free_double_ptr(n_line);
+	free_linked_list(env);
 	exit(0);
 }

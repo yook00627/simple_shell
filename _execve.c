@@ -2,14 +2,7 @@
 
 void c_exit(char **str)
 {
-	int n = 0;
-
-	while (str[n] != NULL) /* free user input before exiting program */
-	{
-		free(str[n]);
-		n++;
-	}
-	free(str);
+	free_double_ptr(str);
 	_exit(0);
 }
 
@@ -19,7 +12,7 @@ void c_exit(char **str)
  * @env: environmental variable
  * Return: 0 on success
  */
-int _execve(char **s, char **env)
+int _execve(char **s, list_t *env)
 {
 	char *holder;
 

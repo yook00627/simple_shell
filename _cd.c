@@ -41,11 +41,10 @@ char *c_strcat(char *dest, char *src)
 }
 
 
-void _cd(char **str, char **env)
+void _cd(char **str, list_t *env)
 {
 	char *home;
 	char *current = NULL;
-	int n = 0;
 
 	if (str[1] != NULL)
 	{
@@ -84,10 +83,5 @@ void _cd(char **str, char **env)
 			perror("Error:");
 		free(home);
 	}
-	while (str[n] != NULL) /* frees user input */
-	{
-		free(str[n]);
-		n++;
-	}
-	free(str);
+	free_double_ptr(str); /* frees user input */
 }
