@@ -37,7 +37,7 @@ int t_size(char *str, char delm)
 			/*checking if there only 1 command with spaces*/
 		}
 		if ((str[i] == delm) && (str[i + 1] == '\0'))
-				num_delm--;
+			num_delm--;
 		i++;
 	}
 	return (num_delm);
