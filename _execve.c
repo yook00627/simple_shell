@@ -1,5 +1,9 @@
 #include "shell.h"
 
+/**
+ * c_exit - frees user's typed command before exiting
+ * @str: user's typed command
+ */
 void c_exit(char **str)
 {
 	free_double_ptr(str);
@@ -21,26 +25,26 @@ int _execve(char **s, list_t *env)
 	{
 		if (execve(s[0], s, NULL) == -1)
 		{
-			perror("Error1:");
+			perror("Error:");
 			c_exit(s);
 		}
 	}
-	/* else flesh out full path and execute command */
+	/* else flesh out full path */
 	else
-	{
 		holder = _which(s[0], env);
-	}
+
+	/* execute command with full path */
 	if (access(holder, F_OK) != 0)
 	{
 		perror("error");
 		c_exit(s);
 	}
-	else
+	else /* if not legit command, perror and exit */
 	{
 		if (execve(holder, s, NULL) == -1)
 		{
-			perror("Error2:");
-			c_exit(s); /* if not a legit cmd, free and exit */
+			perror("Error:");
+			c_exit(s);
 		}
 	}
 	return (0);

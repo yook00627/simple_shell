@@ -11,7 +11,10 @@ void ctrl_c(int n)
 }
 
 /**
- *
+ * built_in - handles builtins (exit, env, cd)
+ * @token: user's typed command
+ * @env: environmental variable
+ * Return: 1 if acted on builtin, 0 if not
  */
 int built_in(char **token, list_t *env)
 {
@@ -40,10 +43,20 @@ int built_in(char **token, list_t *env)
 }
 
 /**
+ * ignore_space - return string without spaces in front
+ * @str: string
+ * Return: new string
+ */
+char *ignore_space(char *str)
+{
+	while (*str == ' ')
+		str++;
+	return (str);
+}
+
+/**
  * prompt - repeatedly prompts user and executes user's cmds if applicable
- * @ac: argument count
- * @av: argument vectors
- * @env: envrionmental variables
+ * @en: envrionmental variables
  * Return: 0 on success
  */
 int prompt(char **en)
@@ -60,7 +73,7 @@ int prompt(char **en)
 			write(STDOUT_FILENO, "Kev Mel Shell$ ", 15);
 		else
 			non_interactive(env);
-		signal(SIGINT, ctrl_c); /*makes ctrl+c not work*/
+		signal(SIGINT, ctrl_c); /* makes ctrl+c not work */
 		command = NULL; /* reset command to NULL each time loop runs */
 		i = 0;
 		i = _getline(&command);
@@ -68,7 +81,7 @@ int prompt(char **en)
 		{
 			free(command); /* exit with newline if in shell */
 			free_linked_list(env);
-			if (isatty(STDIN_FILENO))/*handles ctrl+d properly*/
+			if (isatty(STDIN_FILENO))/* handles ctrl+d properly */
 				write(STDOUT_FILENO, "\n", 1);
 			exit(0);
 		}
@@ -89,18 +102,14 @@ int prompt(char **en)
 			free(n_command);
 		if (built_in(token, env)) /*checks for built*/
 			continue;
-
 		pid = fork(); /* create child process to execute cmd */
 		if (pid == 0)
-		{
 			_execve(token, env);
-		}
 		else /* parent waits till child finishes & frees cmd tokens */
 		{
 			wait(&status);
 			free_double_ptr(token);
 		}
 	} while (i > 0); /* keep on repeating till user exits shell */
-
 	return (0);
 }

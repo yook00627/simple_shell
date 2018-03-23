@@ -23,10 +23,12 @@ int c_t_size(char *str, char delm)
 
 
 /**
- * c_strtok - tokenizes a string even the continuouse delim with empty string
+ * c_strtok - tokenizes a string even the continuous delim with empty string
+ * (e.g. path --> ":/bin::/bin/usr" )
  * @str: user's command typed into shell
  * @delm: delimeter (e.g. " ");
- * Return: an array of tokens (e.g. {"ls", "-l", "/tmp"}
+ * Return: an array of tokens (e.g. {"\0", "/bin", "\0", "/bin/usr"}
+ * (purpose is to have which command look through current directory if ":")
  */
 char **c_strtok(char *str, char *delm)
 {
