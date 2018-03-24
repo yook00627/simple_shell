@@ -28,15 +28,25 @@ int built_in(char **token, list_t *env)
 		i = 1;
 	}
 	/* if user types "env", print, free cmd tokens, and reprompt */
-	if (_strcmp(token[0], "env") == 0)
+	else if (_strcmp(token[0], "env") == 0)
 	{
 		_env(token, env);
 		i = 1;
 	}
 	/* if user types "cd" , it will chnge directory*/
-	if (_strcmp(token[0], "cd") == 0)
+	else if (_strcmp(token[0], "cd") == 0)
 	{
 		_cd(token, env);
+		i = 1;
+	}
+	else if (_strcmp(token[0], "setenv") == 0)
+	{
+		_setenv(&env, token);
+		i = 1;
+	}
+	else if (_strcmp(token[0], "unsetenv") == 0)
+	{
+		_unsetenv(&env, token);
 		i = 1;
 	}
 	return (i);

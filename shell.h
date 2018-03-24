@@ -52,5 +52,7 @@ list_t *add_end_node(list_t **head, char *str);
 size_t print_list(list_t *h);
 int delete_nodeint_at_index(list_t **head, int index);
 int _unsetenv(list_t **env, char **str);
+int _setenv(list_t **env, char **str);
+int find_env(list_t *env, char *str);
 
 #endif

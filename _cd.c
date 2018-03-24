@@ -40,6 +40,28 @@ char *c_strcat(char *dest, char *src)
 	return (dest);
 }
 
+int c_setenv(list_t **env, char *name, char *dir)
+{
+	int index = 0, j = 0;
+	char *cat;
+	list_t *holder;
+
+	cat = _strdup(name);
+	cat = _strcat(cat, "=");
+	cat = _strcat(cat, dir);
+	index = find_env(*env, name);
+	holder = *env;
+	while (j < index)
+	{
+		holder = holder->next;
+		j++;
+	}
+	free(holder->var);
+	holder->var = _strdup(cat);
+	free(cat);
+	return (0);
+}
+
 /**
  * _cd - change directory
  * @str: user's typed in command
@@ -47,41 +69,52 @@ char *c_strcat(char *dest, char *src)
  */
 void _cd(char **str, list_t *env)
 {
-	char *home;
-	char *current = NULL;
+	char *home = NULL, *current = NULL, *dir = NULL;
 
+	current = getcwd(current, 0);
 	if (str[1] != NULL)
 	{
 		if (str[1][0] == '~') /* Usage: cd ~ */
 		{
-			current = get_env("HOME", env);
-			current = c_strcat(current, str[1]);
+			dir = get_env("HOME", env);
+			dir = c_strcat(dir, str[1]);
 		}
 		else if (str[1][0] == '-') /* Usage: cd - */
 		{
-
+			if (str[1][1] == '\0')
+				dir = get_env("OLDPWD", env);
 		}
 		else /* Usage: cd directory1 */
 		{
-			current = getcwd(current, 0);
+			dir = getcwd(dir, 0);
 			if (str[1][0] != '/')
-				current = _strcat(current, "/");
-			current = _strcat(current, str[1]);
+				dir = _strcat(dir, "/");
+			dir = _strcat(dir, str[1]);
 		}
-		if (access(current, F_OK) == 0)
-			chdir(current);
+		c_setenv(&env, "OLDPWD", current);
+		free(current);
+		if (access(dir, F_OK) == 0)
+			chdir(dir);
 		else
 			perror("Error:");
-		free(current);
+		current = NULL;
+		current = getcwd(current, 0);
+		c_setenv(&env, "PWD", current);
 	}
 	else /* Usage: cd */
 	{
 		home = get_env("HOME", env);
+		c_setenv(&env, "OLDPWD", current);
+		free(current);
 		if (access(home, F_OK) == 0)
 			chdir(home);
 		else
 			perror("Error:");
+		current = NULL;
+		current = getcwd(current, 0);
+		c_setenv(&env, "PWD", current);
 		free(home);
 	}
+	free(current);
 	free_double_ptr(str); /* frees user input */
 }
