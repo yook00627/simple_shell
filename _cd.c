@@ -40,16 +40,25 @@ char *c_strcat(char *dest, char *src)
 	return (dest);
 }
 
+/**
+ * c_setenv - custom setenv by concatenating string first before setting
+ * @env: environmental variable linked list
+ * @name: environmental variable name (e.g. "OLDPWD")
+ * @dir: directory path (e.g. "/home/vagrant/directory1")
+ * Return: 0 on success (e.g. "OLDPWD=/home/vagrant/directory1")
+ */
 int c_setenv(list_t **env, char *name, char *dir)
 {
 	int index = 0, j = 0;
 	char *cat;
 	list_t *holder;
 
-	cat = _strdup(name);
+	cat = _strdup(name); /* create new concatenated string */
 	cat = _strcat(cat, "=");
 	cat = _strcat(cat, dir);
-	index = find_env(*env, name);
+	index = find_env(*env, name); /* get idx to env var in linked list */
+
+	/* traverse to idx, free node data, reassign data */
 	holder = *env;
 	while (j < index)
 	{
@@ -65,13 +74,13 @@ int c_setenv(list_t **env, char *name, char *dir)
 /**
  * _cd - change directory
  * @str: user's typed in command
- * @env: enviromental linked list to retrieve HOME path
+ * @env: enviromental linked list to retrieve HOME and OLDPWD paths
  */
 void _cd(char **str, list_t *env)
 {
 	char *home = NULL, *current = NULL, *dir = NULL;
 
-	current = getcwd(current, 0);
+	current = getcwd(current, 0); /* store current working directory */
 	if (str[1] != NULL)
 	{
 		if (str[1][0] == '~') /* Usage: cd ~ */
@@ -91,28 +100,28 @@ void _cd(char **str, list_t *env)
 				dir = _strcat(dir, "/");
 			dir = _strcat(dir, str[1]);
 		}
-		c_setenv(&env, "OLDPWD", current);
+		c_setenv(&env, "OLDPWD", current); /* update env OLDPWD */
 		free(current);
 		if (access(dir, F_OK) == 0)
 			chdir(dir);
 		else
-			perror("Error:");
+			perror("Error");
 		current = NULL;
-		current = getcwd(current, 0);
-		c_setenv(&env, "PWD", current);
+		current = getcwd(current, 0); /* get current working dir */
+		c_setenv(&env, "PWD", current); /* update env PWD */
 	}
 	else /* Usage: cd */
 	{
 		home = get_env("HOME", env);
-		c_setenv(&env, "OLDPWD", current);
+		c_setenv(&env, "OLDPWD", current); /* update env OLDPWD */
 		free(current);
-		if (access(home, F_OK) == 0)
+		if (access(home, F_OK) == 0) /* if exist, go to home dir */
 			chdir(home);
 		else
 			perror("Error:");
 		current = NULL;
 		current = getcwd(current, 0);
-		c_setenv(&env, "PWD", current);
+		c_setenv(&env, "PWD", current); /* update env PWD */
 		free(home);
 	}
 	free(current);

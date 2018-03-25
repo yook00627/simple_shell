@@ -33,17 +33,19 @@ int built_in(char **token, list_t *env)
 		_env(token, env);
 		i = 1;
 	}
-	/* if user types "cd" , it will chnge directory*/
+	/* if user types "cd" , it will change directory */
 	else if (_strcmp(token[0], "cd") == 0)
 	{
 		_cd(token, env);
 		i = 1;
 	}
+	/* if user types "setenv", create or modify linked list node */
 	else if (_strcmp(token[0], "setenv") == 0)
 	{
 		_setenv(&env, token);
 		i = 1;
 	}
+	/* if user types "setenv", remove linked list node */
 	else if (_strcmp(token[0], "unsetenv") == 0)
 	{
 		_unsetenv(&env, token);
@@ -74,7 +76,6 @@ int prompt(char **en)
 	list_t *env;
 	size_t i = 0, n = 0;
 	int status = 0;
-	pid_t pid = 0;
 	char *command, *n_command, **token;
 
 	env = env_linked_list(en);
@@ -84,14 +85,13 @@ int prompt(char **en)
 		else
 			non_interactive(env);
 		signal(SIGINT, ctrl_c); /* makes ctrl+c not work */
-		command = NULL; /* reset command to NULL each time loop runs */
-		i = 0;
-		i = _getline(&command);
-		if (i == 0)
+		command = NULL; i = 0; /* reset vars each time loop runs */
+		i = _getline(&command); /* read user's cmd in stdin */
+		if (i == 0) /* handles Ctrl+D */
 		{
 			free(command); /* exit with newline if in shell */
 			free_linked_list(env);
-			if (isatty(STDIN_FILENO))/* handles ctrl+d properly */
+			if (isatty(STDIN_FILENO))/* ctrl+d prints newline */
 				write(STDOUT_FILENO, "\n", 1);
 			exit(0);
 		}
@@ -103,8 +103,7 @@ int prompt(char **en)
 		command[n] = '\0';
 		if (command[0] == '\0') /* reprompt if user hits enter only */
 		{
-			free(n_command);
-			continue;
+			free(n_command); continue;
 		}
 		token = NULL; /* tokenize user's typed in command */
 		token = _strtok(command, " ");
@@ -112,8 +111,7 @@ int prompt(char **en)
 			free(n_command);
 		if (built_in(token, env)) /*checks for built*/
 			continue;
-		pid = fork(); /* create child process to execute cmd */
-		if (pid == 0)
+		if (fork() == 0) /* create child process to execute cmd */
 			_execve(token, env);
 		else /* parent waits till child finishes & frees cmd tokens */
 		{
