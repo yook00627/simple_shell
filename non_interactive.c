@@ -21,7 +21,7 @@ char *c_ignore(char *str)
 void non_interactive(list_t *env)
 {
 	size_t i = 0, n = 0;
-	int status = 0;
+	int status = 0, command_line_no = 0;
 	pid_t pid = 0;
 	char *command = NULL, *n_command = NULL, **n_line, **token;
 
@@ -39,16 +39,17 @@ void non_interactive(list_t *env)
 	n = 0;
 	while (n_line[n] != NULL)
 	{
+		command_line_no++;
 		token = NULL; /* tokenize user's typed in command */
 		token = _strtok(n_line[n], " ");
-		if (built_in(token, env))/*checks for built ins*/
+		if (built_in(token, env, command_line_no))/*checks for built ins*/
 		{
 			n++;
 			continue;
 		}
 		pid = fork(); /* create child process to execute cmd */
 		if (pid == 0)
-			_execve(token, env);
+			_execve(token, env, command_line_no);
 		else /* parent waits till child finishes & frees cmd tokens */
 		{
 			wait(&status);

@@ -76,7 +76,7 @@ int c_setenv(list_t **env, char *name, char *dir)
  * @str: user's typed in command
  * @env: enviromental linked list to retrieve HOME and OLDPWD paths
  */
-void _cd(char **str, list_t *env)
+void _cd(char **str, list_t *env, int num)
 {
 	char *home = NULL, *current = NULL, *dir = NULL;
 
@@ -105,7 +105,7 @@ void _cd(char **str, list_t *env)
 		if (access(dir, F_OK) == 0)
 			chdir(dir);
 		else
-			perror("Error");
+			cant_cd_to(str[1], num, env);
 		current = NULL;
 		current = getcwd(current, 0); /* get current working dir */
 		c_setenv(&env, "PWD", current); /* update env PWD */
@@ -118,7 +118,7 @@ void _cd(char **str, list_t *env)
 		if (access(home, F_OK) == 0) /* if exist, go to home dir */
 			chdir(home);
 		else
-			perror("Error:");
+			cant_cd_to(str[1], num, env);
 		current = NULL;
 		current = getcwd(current, 0);
 		c_setenv(&env, "PWD", current); /* update env PWD */

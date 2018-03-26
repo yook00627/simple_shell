@@ -25,19 +25,20 @@ int c_atoi(char *s)
  * __exit - frees user input and then exits main program with a value
  * @str: user's command into shell (e.g. "exit 99")
  */
-void __exit(char **str)
+void __exit(char **str, list_t *env, int num)
 {
 	int e_value = 0;
 
 	if (str[1] != NULL) /* if no value given after exit, return 0 */
 		e_value = c_atoi(str[1]);
 
-	free_double_ptr(str); /* free user input before exiting program */
-
 	if (e_value == -1) /* if value given after exit is invalid, perror */
 	{
-		perror("Error:");
+		illegal_number(str[1], num, env);
+		free_double_ptr(str);
 		return;
 	}
+	free_double_ptr(str); /* free user input before exiting program */
+	free_linked_list(env);
 	exit(e_value);
 }

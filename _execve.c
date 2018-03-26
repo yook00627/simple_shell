@@ -16,7 +16,7 @@ void c_exit(char **str)
  * @env: environmental variable
  * Return: 0 on success
  */
-int _execve(char **s, list_t *env)
+int _execve(char **s, list_t *env, int num)
 {
 	char *holder;
 
@@ -25,7 +25,7 @@ int _execve(char **s, list_t *env)
 	{
 		if (execve(s[0], s, NULL) == -1)
 		{
-			perror("Error:");
+			not_found(s[0], num, env);
 			c_exit(s);
 		}
 	}
@@ -36,14 +36,14 @@ int _execve(char **s, list_t *env)
 	/* execute command with full path */
 	if (access(holder, F_OK) != 0)
 	{
-		perror("error");
+		not_found(s[0], num, env);
 		c_exit(s);
 	}
 	else /* if not legit command, perror and exit */
 	{
 		if (execve(holder, s, NULL) == -1)
 		{
-			perror("Error:");
+			not_found(s[0], num, env);
 			c_exit(s);
 		}
 	}

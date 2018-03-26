@@ -16,15 +16,14 @@ void ctrl_c(int n)
  * @env: environmental variable
  * Return: 1 if acted on builtin, 0 if not
  */
-int built_in(char **token, list_t *env)
+int built_in(char **token, list_t *env, int num)
 {
 	int i = 0;
 
 	/* if user types "exit", free cmd tokens, and exit */
 	if (_strcmp(token[0], "exit") == 0)
 	{
-		free_linked_list(env);
-		__exit(token);
+		__exit(token, env, num);
 		i = 1;
 	}
 	/* if user types "env", print, free cmd tokens, and reprompt */
@@ -36,7 +35,7 @@ int built_in(char **token, list_t *env)
 	/* if user types "cd" , it will change directory */
 	else if (_strcmp(token[0], "cd") == 0)
 	{
-		_cd(token, env);
+		_cd(token, env, num);
 		i = 1;
 	}
 	/* if user types "setenv", create or modify linked list node */
@@ -75,11 +74,12 @@ int prompt(char **en)
 {
 	list_t *env;
 	size_t i = 0, n = 0;
-	int status = 0;
+	int status = 0, command_line_no = 0;
 	char *command, *n_command, **token;
 
 	env = env_linked_list(en);
 	do {
+		command_line_no++;
 		if (isatty(STDIN_FILENO)) /* reprompt if in interactive shell */
 			write(STDOUT_FILENO, "Kev Mel Shell$ ", 15);
 		else
@@ -109,10 +109,10 @@ int prompt(char **en)
 		token = _strtok(command, " ");
 		if (n_command != NULL)
 			free(n_command);
-		if (built_in(token, env)) /*checks for built*/
+		if (built_in(token, env, command_line_no)) /*checks for built*/
 			continue;
 		if (fork() == 0) /* create child process to execute cmd */
-			_execve(token, env);
+			_execve(token, env, command_line_no);
 		else /* parent waits till child finishes & frees cmd tokens */
 		{
 			wait(&status);
