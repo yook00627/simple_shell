@@ -48,7 +48,7 @@ char *get_env(char *str, list_t *env)
 		j = 0;
 		while ((env->var)[j] == str[j]) /* find desired env variable */
 			j++;
-		if (str[j] == '\0')
+		if (str[j] == '\0' && (env->var)[j] == '=')
 			break;
 		env = env->next;
 	}

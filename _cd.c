@@ -76,21 +76,48 @@ int c_setenv(list_t **env, char *name, char *dir)
  * @env: bring in environmental linked list to update PATH and OLDPWD
  * @current: bring in current working directotry
  */
-void cd_only(list_t **env, char *current)
+void cd_only(list_t *env, char *current)
 {
 	char *home = NULL;
 
-	home = get_env("HOME", *env);
-	c_setenv(env, "OLDPWD", current); /* update env OLDPWD */
+	home = get_env("HOME", env);
+	c_setenv(&env, "OLDPWD", current); /* update env OLDPWD */
 	free(current);
 	if (access(home, F_OK) == 0) /* if exist, go to home dir */
 		chdir(home);
 	current = NULL;
 	current = getcwd(current, 0);
-	c_setenv(env, "PWD", current); /* update env PWD */
+	c_setenv(&env, "PWD", current); /* update env PWD */
 	free(current);
 	free(home);
 }
+/**
+ * cd_execute - executes the cd
+ * @env: bring in environmental linked list to update PATH and OLDPWD
+ * @current: bring in current working directotry
+ * @dir: bring in directory path to change to
+ * @str: bring in the 1st argumet to print out error
+ * @num: bring in the line number to print out error
+ */
+void cd_execute(list_t *env, char *current, char *dir, char *str, int num)
+{
+	if (access(dir, F_OK) == 0)
+	{
+		c_setenv(&env, "OLDPWD", current); /* update env OLDPWD */
+		free(current);
+		chdir(dir);
+		current = NULL;
+		current = getcwd(current, 0); /* get current working dir */
+		c_setenv(&env, "PWD", current); /* update env PWD */
+		free(current);
+	}
+	else
+	{
+		cant_cd_to(str, num, env);
+		free(current);
+	}
+}
+
 /**
  * _cd - change directory
  * @str: user's typed in command
@@ -99,7 +126,7 @@ void cd_only(list_t **env, char *current)
  */
 void _cd(char **str, list_t *env, int num)
 {
-	char *home = NULL, *current = NULL, *dir = NULL;
+	char *current = NULL, *dir = NULL;
 
 	current = getcwd(current, 0); /* store current working directory */
 	if (str[1] != NULL)
@@ -116,25 +143,19 @@ void _cd(char **str, list_t *env, int num)
 		}
 		else /* Usage: cd directory1 */
 		{
-			dir = getcwd(dir, 0);
 			if (str[1][0] != '/')
+			{
+				dir = getcwd(dir, 0);
 				dir = _strcat(dir, "/");
-			dir = _strcat(dir, str[1]);
+				dir = _strcat(dir, str[1]);
+			}
+			else
+				dir = _strdup(str[1]);
 		}
-		if (access(dir, F_OK) == 0)
-		{
-			c_setenv(&env, "OLDPWD", current); /* update env OLDPWD */
-			free(current);
-			chdir(dir);
-		}
-		else
-			cant_cd_to(str[1], num, env);
-		current = NULL;
-		current = getcwd(current, 0); /* get current working dir */
-		c_setenv(&env, "PWD", current); /* update env PWD */
-		free(current);
-}
+		cd_execute(env, current, dir, str[1], num);
+		free(dir);
+	}
 	else /* Usage: cd */
-		cd_only(&env, current);
+		cd_only(env, current);
 	free_double_ptr(str); /* frees user input */
 }
