@@ -1,7 +1,7 @@
 #include "shell.h"
 
 /**
- * c_strcat - concatenate two strings ignoring the first character
+ * c_strcat - concatenate two strings ignoring the first character ("~" in cd)
  * @dest: string to be appended to
  * @src: string to append
  * Return: concatenated string
@@ -40,16 +40,25 @@ char *c_strcat(char *dest, char *src)
 	return (dest);
 }
 
+/**
+ * c_setenv - custom setenv by concatenating string first before setting
+ * @env: environmental variable linked list
+ * @name: environmental variable name (e.g. "OLDPWD")
+ * @dir: directory path (e.g. "/home/vagrant/directory1")
+ * Return: 0 on success (e.g. "OLDPWD=/home/vagrant/directory1")
+ */
 int c_setenv(list_t **env, char *name, char *dir)
 {
 	int index = 0, j = 0;
 	char *cat;
 	list_t *holder;
 
-	cat = _strdup(name);
+	cat = _strdup(name); /* create new concatenated string */
 	cat = _strcat(cat, "=");
 	cat = _strcat(cat, dir);
-	index = find_env(*env, name);
+	index = find_env(*env, name); /* get idx to env var in linked list */
+
+	/* traverse to idx, free node data, reassign data */
 	holder = *env;
 	while (j < index)
 	{
@@ -63,15 +72,63 @@ int c_setenv(list_t **env, char *name, char *dir)
 }
 
 /**
+ * cd_only - change directory to home
+ * @env: bring in environmental linked list to update PATH and OLDPWD
+ * @current: bring in current working directotry
+ */
+void cd_only(list_t *env, char *current)
+{
+	char *home = NULL;
+
+	home = get_env("HOME", env);
+	c_setenv(&env, "OLDPWD", current); /* update env OLDPWD */
+	free(current);
+	if (access(home, F_OK) == 0) /* if exist, go to home dir */
+		chdir(home);
+	current = NULL;
+	current = getcwd(current, 0);
+	c_setenv(&env, "PWD", current); /* update env PWD */
+	free(current);
+	free(home);
+}
+/**
+ * cd_execute - executes the cd
+ * @env: bring in environmental linked list to update PATH and OLDPWD
+ * @current: bring in current working directotry
+ * @dir: bring in directory path to change to
+ * @str: bring in the 1st argumet to print out error
+ * @num: bring in the line number to print out error
+ */
+void cd_execute(list_t *env, char *current, char *dir, char *str, int num)
+{
+	if (access(dir, F_OK) == 0)
+	{
+		c_setenv(&env, "OLDPWD", current); /* update env OLDPWD */
+		free(current);
+		chdir(dir);
+		current = NULL;
+		current = getcwd(current, 0); /* get current working dir */
+		c_setenv(&env, "PWD", current); /* update env PWD */
+		free(current);
+	}
+	else
+	{
+		cant_cd_to(str, num, env);
+		free(current);
+	}
+}
+
+/**
  * _cd - change directory
  * @str: user's typed in command
- * @env: enviromental linked list to retrieve HOME path
+ * @env: enviromental linked list to retrieve HOME and OLDPWD paths
+ * @num: nth user command, to be used at error message
  */
-void _cd(char **str, list_t *env)
+void _cd(char **str, list_t *env, int num)
 {
-	char *home = NULL, *current = NULL, *dir = NULL;
+	char *current = NULL, *dir = NULL;
 
-	current = getcwd(current, 0);
+	current = getcwd(current, 0); /* store current working directory */
 	if (str[1] != NULL)
 	{
 		if (str[1][0] == '~') /* Usage: cd ~ */
@@ -86,35 +143,19 @@ void _cd(char **str, list_t *env)
 		}
 		else /* Usage: cd directory1 */
 		{
-			dir = getcwd(dir, 0);
 			if (str[1][0] != '/')
+			{
+				dir = getcwd(dir, 0);
 				dir = _strcat(dir, "/");
-			dir = _strcat(dir, str[1]);
+				dir = _strcat(dir, str[1]);
+			}
+			else
+				dir = _strdup(str[1]);
 		}
-		c_setenv(&env, "OLDPWD", current);
-		free(current);
-		if (access(dir, F_OK) == 0)
-			chdir(dir);
-		else
-			perror("Error:");
-		current = NULL;
-		current = getcwd(current, 0);
-		c_setenv(&env, "PWD", current);
+		cd_execute(env, current, dir, str[1], num);
+		free(dir);
 	}
 	else /* Usage: cd */
-	{
-		home = get_env("HOME", env);
-		c_setenv(&env, "OLDPWD", current);
-		free(current);
-		if (access(home, F_OK) == 0)
-			chdir(home);
-		else
-			perror("Error:");
-		current = NULL;
-		current = getcwd(current, 0);
-		c_setenv(&env, "PWD", current);
-		free(home);
-	}
-	free(current);
+		cd_only(env, current);
 	free_double_ptr(str); /* frees user input */
 }

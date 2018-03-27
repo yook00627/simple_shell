@@ -19,14 +19,15 @@ list_t *env_linked_list(char **env)
 	return (head);
 }
 
-/*
-void main(int ac, char **av, char **env)
+/**
+ * _env - prints environmental variables
+ * @str: user's command into shell (i.e. "env")
+ * @env: environmental variables
+ * Return: 0 on success
+ */
+int _env(char **str, list_t *env)
 {
-	list_t *list;
-	(void)ac;
-	(void)av;
-
-	list = env_linked_list(env);
-	print_list(list);
+	free_double_ptr(str); /* frees user input */
+	print_list(env); /* prints env */
+	return (0);
 }
-*/

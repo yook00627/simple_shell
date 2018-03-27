@@ -11,7 +11,7 @@ size_t _getline(char **str)
 	ssize_t i = 0, size = 0, t = 0, t2 = 0, n = 0;
 	char buff[BUFF_SIZE];
 
-	/* read while there's stdin greater than buffsize and it's not the \n */
+	/* read while there's stdin greater than buffsize; -1 to add a '\0' */
 	while (t2 == 0 && (i = read(STDIN_FILENO, buff, BUFF_SIZE - 1)))
 	{
 		if (i == -1) /* check if read errored */
