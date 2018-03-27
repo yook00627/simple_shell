@@ -1,7 +1,7 @@
 #include "shell.h"
 
 /**
- * c_strcat - concatenate two strings ignoring the first character
+ * c_strcat - concatenate two strings ignoring the first character ("~" in cd)
  * @dest: string to be appended to
  * @src: string to append
  * Return: concatenated string
@@ -75,6 +75,7 @@ int c_setenv(list_t **env, char *name, char *dir)
  * _cd - change directory
  * @str: user's typed in command
  * @env: enviromental linked list to retrieve HOME and OLDPWD paths
+ * @num: nth user command, to be used at error message
  */
 void _cd(char **str, list_t *env, int num)
 {

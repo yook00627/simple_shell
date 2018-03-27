@@ -14,6 +14,7 @@ void c_exit(char **str)
  * _execve - execute command user typed into shell
  * @s: command user typed
  * @env: environmental variable
+ * @num: nth user command; to be used in error message
  * Return: 0 on success
  */
 int _execve(char **s, list_t *env, int num)

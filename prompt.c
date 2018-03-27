@@ -66,6 +66,24 @@ char *ignore_space(char *str)
 }
 
 /**
+ * ctrl_D - exits program if Ctrl-D was pressed
+ * @i: characters read via getline
+ * @command: user's typed in command
+ * @env: environmental variable linked list
+ */
+void ctrl_D(int i, char *command, list_t *env)
+{
+	if (i == 0) /* handles Ctrl+D */
+	{
+		free(command); /* exit with newline if in shell */
+		free_linked_list(env);
+		if (isatty(STDIN_FILENO))/* ctrl+d prints newline */
+			write(STDOUT_FILENO, "\n", 1);
+		exit(0);
+	}
+}
+
+/**
  * prompt - repeatedly prompts user and executes user's cmds if applicable
  * @en: envrionmental variables
  * Return: 0 on success
@@ -87,14 +105,7 @@ int prompt(char **en)
 		signal(SIGINT, ctrl_c); /* makes ctrl+c not work */
 		command = NULL; i = 0; /* reset vars each time loop runs */
 		i = _getline(&command); /* read user's cmd in stdin */
-		if (i == 0) /* handles Ctrl+D */
-		{
-			free(command); /* exit with newline if in shell */
-			free_linked_list(env);
-			if (isatty(STDIN_FILENO))/* ctrl+d prints newline */
-				write(STDOUT_FILENO, "\n", 1);
-			exit(0);
-		}
+		ctrl_D(i, command, env); /* exits shell if ctrl-D */
 		n_command = command;
 		command = ignore_space(command);
 		n = 0;
@@ -105,8 +116,7 @@ int prompt(char **en)
 		{
 			free(n_command); continue;
 		}
-		token = NULL; /* tokenize user's typed in command */
-		token = _strtok(command, " ");
+		token = NULL; token = _strtok(command, " "); /*token user cmd*/
 		if (n_command != NULL)
 			free(n_command);
 		if (built_in(token, env, command_line_no)) /*checks for built*/

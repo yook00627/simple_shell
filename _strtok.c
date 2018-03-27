@@ -23,7 +23,7 @@ int t_strlen(char *str, int pos, char delm)
  * t_size - returns number of delim ignoring continuous delim
  * @str: user's command typed into shell
  * @delm: delimeter (e.g. " ");
- * Return: number of tokens
+ * Return: number of delims so that (num token = delims + 1)
  */
 int t_size(char *str, char delm)
 {
@@ -104,7 +104,6 @@ char **_strtok(char *str, char *delm)
 		si++;
 	}
 	p++;
-/*	if (p != buffsize + 1) p = t; */
 	toks[p] = NULL; /* set last array ptr to NULL */
 	return (toks);
 }
