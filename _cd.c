@@ -101,10 +101,12 @@ void _cd(char **str, list_t *env, int num)
 				dir = _strcat(dir, "/");
 			dir = _strcat(dir, str[1]);
 		}
-		c_setenv(&env, "OLDPWD", current); /* update env OLDPWD */
-		free(current);
 		if (access(dir, F_OK) == 0)
+		{
+			c_setenv(&env, "OLDPWD", current); /* update env OLDPWD */
+			free(current);
 			chdir(dir);
+		}
 		else
 			cant_cd_to(str[1], num, env);
 		current = NULL;
@@ -118,8 +120,6 @@ void _cd(char **str, list_t *env, int num)
 		free(current);
 		if (access(home, F_OK) == 0) /* if exist, go to home dir */
 			chdir(home);
-		else
-			cant_cd_to(str[1], num, env);
 		current = NULL;
 		current = getcwd(current, 0);
 		c_setenv(&env, "PWD", current); /* update env PWD */
