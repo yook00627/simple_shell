@@ -52,6 +52,8 @@ set_unset_env.c -------------------- finds environment variable index node, sets
 free_double_ptr -------------------- frees double pointers (user's command, arrays)
 _execve.c -------------------------- executes and frees command, then exits program
 __exit.c --------------------------- handles if user types exit or exit(value)
+int_to_string.c -------------------- converts int to string to write error messages
+print_error.c ---------------------- prints special error messages for certain fails
 ```
 ### Environment
 * Language: C
