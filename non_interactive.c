@@ -33,16 +33,16 @@ void non_interactive(list_t *env)
 	}
 	n_command = command;
 	command = c_ignore(command);
-	n_line = _strtok(command, "\n"); /* Usage: echo "ls\nls -l" | ./a.out */
+	n_line = _strtok(command, "\n"); /* tokenize each command string */
 	if (n_command != NULL)
 		free(n_command);
 	n = 0;
 	while (n_line[n] != NULL)
 	{
 		command_line_no++;
-		token = NULL; /* tokenize user's typed in command */
+		token = NULL; /* tokenize each command in array of commands */
 		token = _strtok(n_line[n], " ");
-		if (built_in(token, env, command_line_no))/*checks for built ins*/
+		if (built_in(token, env, command_line_no))/*check for builtins*/
 		{
 			n++;
 			continue;

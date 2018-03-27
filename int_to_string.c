@@ -18,10 +18,9 @@ int numlen(int n)
 	return (count);
 }
 /**
- * int_to_string - turns an integer into a string
- * @list: list where number is held
- *
- * Return: returns the number as a string. returns NULL if failed
+ * int_to_string - turns an int into a string
+ * @number: int
+ * Return: returns the int as a string. returns NULL if failed
  */
 
 char *int_to_string(int number)

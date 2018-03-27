@@ -44,7 +44,7 @@ int _execve(char **s, list_t *env, int num)
 	{
 		if (execve(holder, s, NULL) == -1)
 		{
-			not_found(s[0], num, env);
+			not_found(s[0], num, env); /* print special error msg */
 			c_exit(s);
 		}
 	}
