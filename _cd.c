@@ -72,6 +72,26 @@ int c_setenv(list_t **env, char *name, char *dir)
 }
 
 /**
+ * cd_only - change directory to home
+ * @env: bring in environmental linked list to update PATH and OLDPWD
+ * @current: bring in current working directotry
+ */
+void cd_only(list_t **env, char *current)
+{
+	char *home = NULL;
+
+	home = get_env("HOME", *env);
+	c_setenv(env, "OLDPWD", current); /* update env OLDPWD */
+	free(current);
+	if (access(home, F_OK) == 0) /* if exist, go to home dir */
+		chdir(home);
+	current = NULL;
+	current = getcwd(current, 0);
+	c_setenv(env, "PWD", current); /* update env PWD */
+	free(current);
+	free(home);
+}
+/**
  * _cd - change directory
  * @str: user's typed in command
  * @env: enviromental linked list to retrieve HOME and OLDPWD paths
@@ -112,19 +132,9 @@ void _cd(char **str, list_t *env, int num)
 		current = NULL;
 		current = getcwd(current, 0); /* get current working dir */
 		c_setenv(&env, "PWD", current); /* update env PWD */
-	}
-	else /* Usage: cd */
-	{
-		home = get_env("HOME", env);
-		c_setenv(&env, "OLDPWD", current); /* update env OLDPWD */
 		free(current);
-		if (access(home, F_OK) == 0) /* if exist, go to home dir */
-			chdir(home);
-		current = NULL;
-		current = getcwd(current, 0);
-		c_setenv(&env, "PWD", current); /* update env PWD */
-		free(home);
-	}
-	free(current);
+}
+	else /* Usage: cd */
+		cd_only(&env, current);
 	free_double_ptr(str); /* frees user input */
 }
