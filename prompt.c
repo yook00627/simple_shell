@@ -93,7 +93,7 @@ int prompt(char **en)
 {
 	list_t *env;
 	size_t i = 0, n = 0;
-	int status = 0, command_line_no = 0;
+	int command_line_no = 0, exit_stat = 0;
 	char *command, *n_command, **token;
 
 	env = env_linked_list(en);
@@ -122,13 +122,7 @@ int prompt(char **en)
 			free(n_command);
 		if (built_in(token, env, command_line_no)) /*checks for built*/
 			continue;
-		if (fork() == 0) /* create child process to execute cmd */
-			_execve(token, env, command_line_no);
-		else /* parent waits till child finishes & frees cmd tokens */
-		{
-			wait(&status);
-			free_double_ptr(token);
-		}
+		exit_stat = _execve(token, env, command_line_no);
 	} while (1); /* keep on repeating till user exits shell */
-	return (0);
+	return (exit_stat);
 }

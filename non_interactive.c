@@ -21,8 +21,7 @@ char *c_ignore(char *str)
 void non_interactive(list_t *env)
 {
 	size_t i = 0, n = 0;
-	int status = 0, command_line_no = 0;
-	pid_t pid = 0;
+	int command_line_no = 0, exit_stat = 0;
 	char *command = NULL, *n_command = NULL, **n_line, **token;
 
 	i = get_line(&command);
@@ -47,17 +46,10 @@ void non_interactive(list_t *env)
 			n++;
 			continue;
 		}
-		pid = fork(); /* create child process to execute cmd */
-		if (pid == 0)
-			_execve(token, env, command_line_no);
-		else /* parent waits till child finishes & frees cmd tokens */
-		{
-			wait(&status);
-			n++;
-			free_double_ptr(token);
-		}
+		exit_stat = _execve(token, env, command_line_no);
+		n++;
 	}
 	free_double_ptr(n_line);
 	free_linked_list(env);
-	exit(0);
+	exit(exit_stat);
 }
