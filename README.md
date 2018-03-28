@@ -25,7 +25,7 @@
 > that our shell supports include ```ls``` (```/bin/ls```), ```pwd```, ```echo```,
 > ```which```, ```whereis```, etc. It also handles the executions of ```exit```
 > ```env```. To read more on how a shell works behind the scenes, visit our
-> blog at ____________.         
+> blog [here](https://medium.com/@MelissaNg__/how-a-shell-works-8a5a461c1910).
 
 ### Description of what each file shows:
 ```
