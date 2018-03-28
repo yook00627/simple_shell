@@ -7,7 +7,7 @@
 void ctrl_c(int n)
 {
 	(void)n;
-	write(STDOUT_FILENO, "\nKev Mel Shell$ ", 16);
+	write(STDOUT_FILENO, "\n$ ", 3);
 }
 
 /**
@@ -100,7 +100,7 @@ int prompt(char **en)
 	do {
 		command_line_no++;
 		if (isatty(STDIN_FILENO)) /* reprompt if in interactive shell */
-			write(STDOUT_FILENO, "Kev Mel Shell$ ", 15);
+			write(STDOUT_FILENO, "$ ", 2);
 		else
 			non_interactive(env);
 		signal(SIGINT, ctrl_c); /* makes ctrl+c not work */
