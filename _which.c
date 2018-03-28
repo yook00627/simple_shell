@@ -13,7 +13,7 @@ char *_which(char *str, list_t *env)
 
 	/* get and tokenize PATH directories, then free original string */
 	pth = get_env("PATH", env);
-	toks = c_strtok(pth, ":");
+	toks = c_str_tok(pth, ":");
 	free(pth);
 
 	/* append "/cmd" to each token to see it's legit */

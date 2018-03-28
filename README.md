@@ -42,9 +42,9 @@ _strcat.c -------------------------- concatenates two strings
 _strcmp.c -------------------------- compares if two strings match
 _strcpy.c -------------------------- copies a string
 _strdup.c -------------------------- duplicates a string
-_strtok.c -------------------------- (custom) tokenizes user's command input and returns array
-c_strtok.c ------------------------- tokenizes PATH to include ":" as Null, checks current dir
-_getline.c ------------------------- (custom) reads user's typed input into buffer
+_str_tok.c -------------------------- (custom) tokenizes user's command input and returns array
+c_str_tok.c ------------------------- tokenizes PATH to include ":" as Null, checks current dir
+get_line.c ------------------------- (custom) reads user's typed input into buffer
 _which.c --------------------------- appends command to PATHs, fleshes paths out, returns match
 _cd.c ------------------------------ changes directories
 linked_lists.c --------------------- adds and deletes nodes; prints and frees linked list

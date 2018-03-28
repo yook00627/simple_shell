@@ -28,11 +28,11 @@ typedef struct list
 /* function prototypes */
 int prompt(char **env);
 void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
-size_t _getline(char **str);
+size_t get_line(char **str);
 int t_strlen(char *str, int pos, char delm);
 char *ignore_space(char *str);
-char **_strtok(char *str, char *delm);
-char **c_strtok(char *str, char *delm);
+char **_str_tok(char *str, char *delm);
+char **c_str_tok(char *str, char *delm);
 char *_strcat(char *dest, char *src);
 char *_strdup(char *str);
 char *_strcpy(char *dest, char *src);

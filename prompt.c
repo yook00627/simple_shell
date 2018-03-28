@@ -68,7 +68,7 @@ char *ignore_space(char *str)
 
 /**
  * ctrl_D - exits program if Ctrl-D was pressed
- * @i: characters read via getline
+ * @i: characters read via get_line
  * @command: user's typed in command
  * @env: environmental variable linked list
  */
@@ -105,19 +105,19 @@ int prompt(char **en)
 			non_interactive(env);
 		signal(SIGINT, ctrl_c); /* makes ctrl+c not work */
 		command = NULL; i = 0; /* reset vars each time loop runs */
-		i = _getline(&command); /* read user's cmd in stdin */
+		i = get_line(&command); /* read user's cmd in stdin */
 		ctrl_D(i, command, env); /* exits shell if ctrl-D */
 		n_command = command;
 		command = ignore_space(command);
 		n = 0;
-		while (command[n] != '\n') /* replace _getline's \n with \0 */
+		while (command[n] != '\n') /* replace get_line's \n with \0 */
 			n++;
 		command[n] = '\0';
 		if (command[0] == '\0') /* reprompt if user hits enter only */
 		{
 			free(n_command); continue;
 		}
-		token = NULL; token = _strtok(command, " "); /*token user cmd*/
+		token = NULL; token = _str_tok(command, " "); /*token user cmd*/
 		if (n_command != NULL)
 			free(n_command);
 		if (built_in(token, env, command_line_no)) /*checks for built*/

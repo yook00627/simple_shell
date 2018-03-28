@@ -60,12 +60,12 @@ char *ignore_delm(char *str, char delm)
 }
 
 /**
- * _strtok - tokenizes a string and returns an array of tokens
+ * _str_tok - tokenizes a string and returns an array of tokens
  * @str: user's command typed into shell
  * @delm: delimeter (e.g. " ");
  * Return: an array of tokens (e.g. {"ls", "-l", "/tmp"}
  */
-char **_strtok(char *str, char *delm)
+char **_str_tok(char *str, char *delm)
 {
 	int buffsize = 0, p = 0, si = 0, i = 0, len = 0, se = 0, t = 0;
 	char **toks = NULL, d_ch;
