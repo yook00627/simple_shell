@@ -17,7 +17,7 @@ size_t _getline(char **str)
 		if (i == -1) /* check if read errored */
 			return (-1);
 
-		buff[i] = '\0'; /* terminate buff with \0 to use with strcat */
+		buff[i] = '\0'; /* terminate buff with \0 to use with _strcat */
 
 		n = 0; /* last loop if \n is found in the stdin read */
 		while (buff[n] != '\0')
@@ -36,7 +36,7 @@ size_t _getline(char **str)
 			size = i;
 			t = 1;
 		}
-		else /* realloc via strcat with each loop */
+		else /* realloc via _strcat with each loop */
 		{
 			size += i;
 			*str = _strcat(*str, buff);

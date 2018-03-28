@@ -13,7 +13,7 @@ char *c_strcat(char *dest, char *src)
 	int total_len = 0;
 	int j = 0;
 
-	/* find total length of both strings to realloc */
+	/* find total length of both strings to _realloc */
 	while (dest[len] != '\0')
 	{
 		len++;
@@ -25,7 +25,7 @@ char *c_strcat(char *dest, char *src)
 		total_len++;
 	}
 
-	/* realloc because dest was malloced outside of function */
+	/* _realloc because dest was malloced outside of function */
 	dest = _realloc(dest, len, sizeof(char) * total_len + 1);
 
 	j = 1; /* ignore the first character */
@@ -41,7 +41,7 @@ char *c_strcat(char *dest, char *src)
 }
 
 /**
- * c_setenv - custom setenv by concatenating string first before setting
+ * c_setenv - custom _setenv by concatenating string first before setting
  * @env: environmental variable linked list
  * @name: environmental variable name (e.g. "OLDPWD")
  * @dir: directory path (e.g. "/home/vagrant/directory1")
@@ -96,8 +96,8 @@ void cd_only(list_t *env, char *current)
  * @env: bring in environmental linked list to update PATH and OLDPWD
  * @current: bring in current working directotry
  * @dir: bring in directory path to change to
- * @str: bring in the 1st argumet to print out error
- * @num: bring in the line number to print out error
+ * @str: bring in the 1st argumet to write out error
+ * @num: bring in the line number to write out error
  */
 void cd_execute(list_t *env, char *current, char *dir, char *str, int num)
 {
