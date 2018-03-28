@@ -14,7 +14,7 @@ void ctrl_c(int n)
  * built_in - handles builtins (exit, env, cd)
  * @token: user's typed command
  * @env: environmental variable
- * @num: take in nth user command typed to print error message
+ * @num: take in nth user command typed to write error message
  * Return: 1 if acted on builtin, 0 if not
  */
 int built_in(char **token, list_t *env, int num)
@@ -110,7 +110,7 @@ int prompt(char **en)
 		n_command = command;
 		command = ignore_space(command);
 		n = 0;
-		while (command[n] != '\n') /* replace getline's \n with \0 */
+		while (command[n] != '\n') /* replace _getline's \n with \0 */
 			n++;
 		command[n] = '\0';
 		if (command[0] == '\0') /* reprompt if user hits enter only */
@@ -129,6 +129,6 @@ int prompt(char **en)
 			wait(&status);
 			free_double_ptr(token);
 		}
-	} while (i > 0); /* keep on repeating till user exits shell */
+	} while (1); /* keep on repeating till user exits shell */
 	return (0);
 }
