@@ -38,12 +38,12 @@ int _execve(char **s, list_t *env, int num)
 		free_double_ptr(s);
 		return (127);
 	}
-	/* execute command with full path */
 	else /* if not legit command, perror and exit */
 	{
 		pid = fork();
 		if (pid == 0)
 		{
+			/* execute command with full path */
 			if (execve(holder, s, NULL) == -1)
 			{
 				not_found(s[0], num, env); /* write special error msg */
@@ -54,6 +54,7 @@ int _execve(char **s, list_t *env, int num)
 		{
 			wait(&status);
 			free_double_ptr(s);
+			free(holder);
 		}
 	}
 	return (0);

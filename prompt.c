@@ -17,14 +17,14 @@ void ctrl_c(int n)
  * @num: take in nth user command typed to write error message
  * Return: 1 if acted on builtin, 0 if not
  */
-int built_in(char **token, list_t *env, int num)
+int built_in(char **token, list_t *env, int num, char **command)
 {
 	int i = 0;
 
 	/* if user types "exit", free cmd tokens, and exit */
 	if (_strcmp(token[0], "exit") == 0)
 	{
-		__exit(token, env, num);
+		__exit(token, env, num, command);
 		i = 1;
 	}
 	/* if user types "env", print, free cmd tokens, and reprompt */
@@ -120,7 +120,7 @@ int prompt(char **en)
 		token = NULL; token = _str_tok(command, " "); /*token user cmd*/
 		if (n_command != NULL)
 			free(n_command);
-		if (built_in(token, env, command_line_no)) /*checks for built*/
+		if (built_in(token, env, command_line_no, NULL))
 			continue;
 		exit_stat = _execve(token, env, command_line_no);
 	} while (1); /* keep on repeating till user exits shell */
