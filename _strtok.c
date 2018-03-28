@@ -1,7 +1,7 @@
 #include "shell.h"
 
 /**
- * t_strlen - returns token string length for mallocing
+ * t_strlen - returns token's string length for mallocing
  * @str: a token
  * @pos: index position in user's command typed into shell
  * @delm: delimeter (e.g. " ");
@@ -20,10 +20,10 @@ int t_strlen(char *str, int pos, char delm)
 }
 
 /**
- * t_size - returns number of delim
+ * t_size - returns number of delim ignoring continuous delim
  * @str: user's command typed into shell
  * @delm: delimeter (e.g. " ");
- * Return: number of tokens
+ * Return: number of delims so that (num token = delims + 1)
  */
 int t_size(char *str, char delm)
 {
@@ -32,10 +32,31 @@ int t_size(char *str, char delm)
 	while (str[i] != '\0')
 	{
 		if ((str[i] == delm) && (str[i + 1] != delm))
+		{
+			/* handle continuous delims */
 			num_delm++;
+		}
+		if ((str[i] == delm) && (str[i + 1] == '\0'))
+		{
+			/*handle continuous delims after full command */
+			num_delm--;
+		}
 		i++;
 	}
 	return (num_delm);
+}
+
+/**
+ * ignore_delm - returns a version of string without preceeding delims
+ * @str: string
+ * @delm: delimiter (e.g. " ")
+ * Return: new string (e.g. "    ls -l" --> "ls -l")
+ */
+char *ignore_delm(char *str, char delm)
+{
+	while (*str == delm)
+		str++;
+	return (str);
 }
 
 /**
@@ -46,39 +67,39 @@ int t_size(char *str, char delm)
  */
 char **_strtok(char *str, char *delm)
 {
-	int buffsize = 0, p = 0, si = 0, i = 0, len = 0, se = 0;
-	char **toks, d_ch;
+	int buffsize = 0, p = 0, si = 0, i = 0, len = 0, se = 0, t = 0;
+	char **toks = NULL, d_ch;
 
-	/* set variable to be delimeter character (" ") */
 	d_ch = delm[0];
-
-	/* malloc number of ptrs to store array of tokens, and NULL ptr */
+	/* creates new version of string ignoring all delims infront*/
+	str = ignore_delm(str, d_ch);
+	/* malloc ptrs to store array of tokens (buffsize + 1), and NULL ptr */
 	buffsize = t_size(str, d_ch);
 	toks = malloc(sizeof(char *) * (buffsize + 2));
 	if (toks == NULL)
 		return (NULL);
-
-	/* iterate from string index 0 to string ending index */
-	while (str[se] != '\0')
+	while (str[se] != '\0')	/* find string ending index */
 		se++;
 	while (si < se)
-	{
-		/* malloc lengths for each token ptr in array */
-		len = t_strlen(str, si, d_ch);
-		toks[p] = malloc(sizeof(char) * (len + 1));
-		if (toks[p] == NULL)
-			return (NULL);
-		i = 0;
-		while ((str[si] != d_ch) &&
-		       (str[si] != '\0'))
+	{ /* malloc lengths for each token ptr in array */
+		if (str[si] != d_ch)
 		{
-			toks[p][i] = str[si];
-			i++;
-			si++;
+			len = t_strlen(str, si, d_ch);
+			toks[p] = malloc(sizeof(char) * (len + 1));
+			if (toks[p] == NULL)
+				return (NULL);
+			i = 0;
+			while ((str[si] != d_ch) && (str[si] != '\0'))
+			{
+				toks[p][i] = str[si];
+				i++;
+				si++;
+			}
+			toks[p][i] = '\0'; /* null terminate at end*/
+			t++;
 		}
-		toks[p][i] = '\0'; /* null terminate each string in array */
 		/* handle repeated delimeters; increment ptr after ("ls __-l")*/
-		if (si < se && str[si + 1] != d_ch)
+		if (si < se && (str[si + 1] != d_ch && str[si + 1] != '\0'))
 			p++;
 		si++;
 	}

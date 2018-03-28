@@ -1,15 +1,14 @@
 #include "shell.h"
 
-void c_exit(char **str)
+/**
+ * c_exit - frees user's typed command and linked list before exiting
+ * @str: user's typed command
+ * @env: input the linked list of envirnment
+ */
+void c_exit(char **str, list_t *env)
 {
-	int n = 0;
-
-	while (str[n] != NULL) /* free user input before exiting program */
-	{
-		free(str[n]);
-		n++;
-	}
-	free(str);
+	free_double_ptr(str);
+	free_linked_list(env);
 	_exit(0);
 }
 
@@ -17,9 +16,10 @@ void c_exit(char **str)
  * _execve - execute command user typed into shell
  * @s: command user typed
  * @env: environmental variable
+ * @num: nth user command; to be used in error message
  * Return: 0 on success
  */
-int _execve(char **s, char **env)
+int _execve(char **s, list_t *env, int num)
 {
 	char *holder;
 
@@ -28,26 +28,26 @@ int _execve(char **s, char **env)
 	{
 		if (execve(s[0], s, NULL) == -1)
 		{
-			perror("Error1:");
-			c_exit(s);
+			not_found(s[0], num, env);
+			c_exit(s, env);
 		}
 	}
-	/* else flesh out full path and execute command */
+	/* else flesh out full path */
 	else
-	{
 		holder = _which(s[0], env);
-	}
+
+	/* execute command with full path */
 	if (access(holder, F_OK) != 0)
 	{
-		perror("error");
-		c_exit(s);
+		not_found(s[0], num, env);
+		c_exit(s, env);
 	}
-	else
+	else /* if not legit command, perror and exit */
 	{
 		if (execve(holder, s, NULL) == -1)
 		{
-			perror("Error2:");
-			c_exit(s); /* if not a legit cmd, free and exit */
+			not_found(s[0], num, env); /* write special error msg */
+			c_exit(s, env);
 		}
 	}
 	return (0);

@@ -1,5 +1,11 @@
 #include "shell.h"
 
+/**
+ * c_ignore - custom ignores spaces and newlines
+ * (e.g. echo "ls\n ls" | ./a.out)
+ * @str: envrionmental variables
+ * Return: new string
+ */
 char *c_ignore(char *str)
 {
 	while (*str == ' ' || *str == '\n')
@@ -8,64 +14,50 @@ char *c_ignore(char *str)
 }
 
 /**
- * non_interactive -
+ * non_interactive - handles when user pipes commands into shell via pipeline
+ * (e.g. echo "ls/nls -al/n" | ./a.out)
  * @env: envrionmental variables
  */
-void non_interactive(char **env)
+void non_interactive(list_t *env)
 {
-	size_t i = 0, n = 0, f = 0;
-	int status = 0;
+	size_t i = 0, n = 0;
+	int status = 0, command_line_no = 0;
 	pid_t pid = 0;
-	char *command, *n_command, **n_line, **token;
+	char *command = NULL, *n_command = NULL, **n_line, **token;
 
-	command = NULL; /* reset command to NULL each time loop runs */
-	i = 0;
 	i = _getline(&command);
 	if (i == 0)
 	{
-		free(command); /* exit with newline if in shell */
+		free(command);
 		exit(0);
 	}
 	n_command = command;
 	command = c_ignore(command);
-	n_line = NULL;
-	n_line = _strtok(command, "\n");
+	n_line = _strtok(command, "\n"); /* tokenize each command string */
 	if (n_command != NULL)
 		free(n_command);
 	n = 0;
 	while (n_line[n] != NULL)
 	{
-		token = NULL; /* tokenize user's typed in command */
+		command_line_no++;
+		token = NULL; /* tokenize each command in array of commands */
 		token = _strtok(n_line[n], " ");
-		if (built_in(token, env))/*checks for built ins*/
+		if (built_in(token, env, command_line_no))/*check for builtins*/
 		{
 			n++;
 			continue;
 		}
 		pid = fork(); /* create child process to execute cmd */
 		if (pid == 0)
-		{
-			_execve(token, env);
-		}
+			_execve(token, env, command_line_no);
 		else /* parent waits till child finishes & frees cmd tokens */
 		{
 			wait(&status);
 			n++;
-			f = 0;
-			while (token[f] != NULL)
-			{
-				free(token[f]);
-				f++;
-			}
-			free(token);
+			free_double_ptr(token);
 		}
 	}
-	n = 0;
-	while (n_line[n] != NULL)
-	{
-		free(n_line[n]);
-		n++;
-	}
-	free(n_line);
+	free_double_ptr(n_line);
+	free_linked_list(env);
 	exit(0);
 }
