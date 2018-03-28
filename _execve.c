@@ -22,12 +22,15 @@ void c_exit(char **str, list_t *env)
 int _execve(char **s, list_t *env, int num)
 {
 	char *holder;
-	int status = 0;
+	int status = 0, t = 0;
 	pid_t pid;
 
 	/* if access sees an existing legit full cmd path, it executes cmd */
 	if (access(s[0], F_OK) == 0)
+	{
 		holder = s[0];
+		t = 1;
+	}
 	/* else flesh out full path */
 	else
 		holder = _which(s[0], env);
@@ -54,7 +57,8 @@ int _execve(char **s, list_t *env, int num)
 		{
 			wait(&status);
 			free_double_ptr(s);
-			free(holder);
+			if (t == 0)
+				free(holder);
 		}
 	}
 	return (0);
