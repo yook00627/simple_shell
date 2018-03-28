@@ -13,7 +13,7 @@ char *_strcat(char *dest, char *src)
 	int total_len = 0;
 	int j = 0;
 
-	/* find total length of both strings to realloc */
+	/* find total length of both strings to _realloc */
 	while (dest[len] != '\0')
 	{
 		len++;
@@ -25,7 +25,7 @@ char *_strcat(char *dest, char *src)
 		total_len++;
 	}
 
-	/* realloc because dest was malloced outside of function */
+	/* _realloc because dest was malloced outside of function */
 	dest = _realloc(dest, len, sizeof(char) * total_len + 1);
 
 	while (src[j] != '\0')

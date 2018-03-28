@@ -36,7 +36,7 @@ size_t _getline(char **str)
 			size = i;
 			t = 1;
 		}
-		else /* realloc via _strcat with each loop */
+		else /* _realloc via _strcat with each loop */
 		{
 			size += i;
 			*str = _strcat(*str, buff);
