@@ -32,7 +32,7 @@ size_t _getline(char **str)
 		{
 			i++;
 			*str = malloc(sizeof(char) * i);
-			*str = strcpy(*str, buff);
+			*str = _strcpy(*str, buff);
 			size = i;
 			t = 1;
 		}
