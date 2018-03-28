@@ -27,7 +27,7 @@ size_t _getline(char **str)
 			n++;
 		}
 
-		/* copy what's read to buff into getline's buffer */
+		/* copy what's read to buff into _getline's buffer */
 		if (t == 0) /* malloc the first time */
 		{
 			i++;
