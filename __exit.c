@@ -26,6 +26,7 @@ int c_atoi(char *s)
  * @str: user's command into shell (e.g. "exit 99")
  * @env: bring in environmental variable to free at error
  * @num: bring in nth user command line input to print in error message
+ * @command: bring in command to free
  */
 void __exit(char **str, list_t *env, int num, char **command)
 {
@@ -43,6 +44,6 @@ void __exit(char **str, list_t *env, int num, char **command)
 	free_double_ptr(str); /* free user input before exiting program */
 	free_linked_list(env);
 	if (command != NULL)
-	    free_double_ptr(command);
+		free_double_ptr(command);
 	exit(e_value);
 }

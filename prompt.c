@@ -15,6 +15,7 @@ void ctrl_c(int n)
  * @token: user's typed command
  * @env: environmental variable
  * @num: take in nth user command typed to write error message
+ * @command: bring in command to free
  * Return: 1 if acted on builtin, 0 if not
  */
 int built_in(char **token, list_t *env, int num, char **command)

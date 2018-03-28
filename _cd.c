@@ -96,7 +96,7 @@ void cd_only(list_t *env, char *current)
  * @env: bring in environmental linked list to update PATH and OLDPWD
  * @current: bring in current working directotry
  * @dir: bring in directory path to change to
- * @str: bring in the 1st argumet to write out error
+ * @str: bring in the 1st argument to write out error
  * @num: bring in the line number to write out error
  */
 void cd_execute(list_t *env, char *current, char *dir, char *str, int num)
