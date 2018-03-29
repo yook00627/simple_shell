@@ -41,7 +41,7 @@ void _cd(char **str, list_t *env, int num);
 int built_in(char **token, list_t *env, int num, char **command);
 void non_interactive(list_t *env);
 char *_which(char *str, list_t *env);
-void __exit(char **s, list_t *env, int num, char **command);
+int __exit(char **s, list_t *env, int num, char **command);
 int _execve(char *argv[], list_t *env, int num);
 void free_double_ptr(char **str);
 void free_linked_list(list_t *list);

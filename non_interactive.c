@@ -41,9 +41,11 @@ void non_interactive(list_t *env)
 		command_line_no++;
 		token = NULL; /* tokenize each command in array of commands */
 		token = _str_tok(n_line[n], " ");
-		if (built_in(token, env, command_line_no, n_line))
+		if ((i = built_in(token, env, command_line_no, n_line)))
 		{
 			n++;
+			if (i == 2)
+				exit_stat = 2;
 			continue;
 		}
 		exit_stat = _execve(token, env, command_line_no);
