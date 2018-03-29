@@ -36,8 +36,7 @@ int built_in(char **token, list_t *env, int num, char **command)
 	/* if user types "cd" , it will change directory */
 	else if (_strcmp(token[0], "cd") == 0)
 	{
-		_cd(token, env, num);
-		i = 1;
+		i = _cd(token, env, num);
 	}
 	/* if user types "setenv", create or modify linked list node */
 	else if (_strcmp(token[0], "setenv") == 0)
@@ -120,7 +119,8 @@ int prompt(char **en)
 		token = NULL; token = _str_tok(command, " "); /*token user cmd*/
 		if (n_command != NULL)
 			free(n_command);
-		if (built_in(token, env, command_line_no, NULL))
+		exit_stat = built_in(token, env, command_line_no, NULL);
+		if (exit_stat)
 			continue;
 		exit_stat = _execve(token, env, command_line_no);
 	} while (1); /* keep on repeating till user exits shell */

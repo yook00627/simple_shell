@@ -27,6 +27,7 @@ int c_atoi(char *s)
  * @env: bring in environmental variable to free at error
  * @num: bring in nth user command line input to print in error message
  * @command: bring in command to free
+ * Return: 0 if success 2 if fail
  */
 int __exit(char **str, list_t *env, int num, char **command)
 {
@@ -39,7 +40,7 @@ int __exit(char **str, list_t *env, int num, char **command)
 	{
 		illegal_number(str[1], num, env); /* print error msg */
 		free_double_ptr(str);
-		return(2);
+		return (2);
 	}
 	free_double_ptr(str); /* free user input before exiting program */
 	free_linked_list(env);

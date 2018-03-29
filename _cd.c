@@ -98,9 +98,12 @@ void cd_only(list_t *env, char *current)
  * @dir: bring in directory path to change to
  * @str: bring in the 1st argument to write out error
  * @num: bring in the line number to write out error
+ * Return: 0 if success 2 if fail
  */
-void cd_execute(list_t *env, char *current, char *dir, char *str, int num)
+int cd_execute(list_t *env, char *current, char *dir, char *str, int num)
 {
+	int i = 0;
+
 	if (access(dir, F_OK) == 0)
 	{
 		c_setenv(&env, "OLDPWD", current); /* update env OLDPWD */
@@ -115,7 +118,9 @@ void cd_execute(list_t *env, char *current, char *dir, char *str, int num)
 	{
 		cant_cd_to(str, num, env);
 		free(current);
+		i = 2;
 	}
+	return (i);
 }
 
 /**
@@ -123,10 +128,12 @@ void cd_execute(list_t *env, char *current, char *dir, char *str, int num)
  * @str: user's typed in command
  * @env: enviromental linked list to retrieve HOME and OLDPWD paths
  * @num: nth user command, to be used at error message
+ * Return: 0 if success 2 if failed
  */
-void _cd(char **str, list_t *env, int num)
+int _cd(char **str, list_t *env, int num)
 {
 	char *current = NULL, *dir = NULL;
+	int exit_stat = 0;
 
 	current = getcwd(current, 0); /* store current working directory */
 	if (str[1] != NULL)
@@ -152,10 +159,11 @@ void _cd(char **str, list_t *env, int num)
 			else
 				dir = _strdup(str[1]);
 		}
-		cd_execute(env, current, dir, str[1], num);
+		exit_stat = cd_execute(env, current, dir, str[1], num);
 		free(dir);
 	}
 	else /* Usage: cd */
 		cd_only(env, current);
 	free_double_ptr(str); /* frees user input */
+	return (exit_stat);
 }

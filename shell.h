@@ -37,7 +37,7 @@ char *_strcat(char *dest, char *src);
 char *_strdup(char *str);
 char *_strcpy(char *dest, char *src);
 int _strcmp(char *s1, char *s2);
-void _cd(char **str, list_t *env, int num);
+int _cd(char **str, list_t *env, int num);
 int built_in(char **token, list_t *env, int num, char **command);
 void non_interactive(list_t *env);
 char *_which(char *str, list_t *env);
