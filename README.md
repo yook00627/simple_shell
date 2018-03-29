@@ -16,16 +16,26 @@
 > have more functionality. Our shell is a simple version that handles memory leaks
 > very well and has basic functionality. You can create/write/read/open/remove
 > folders, print things to the terminal, change directories, print where you are
-> in the system, etc.
+> in the system, etc. [To read more on how a shell works behind the scenes, visit our
+ blog here](https://medium.com/@MelissaNg__/how-a-shell-works-8a5a461c1910).
+
 
 ### Synopsis
 > This repository holds all the code necessary for our custom simple shell to run.
 > Our shell currently handles the executions of executables found in the
 > environmental variable PATH, with or without their full paths. Sample commands
 > that our shell supports include ```ls``` (```/bin/ls```), ```pwd```, ```echo```,
-> ```which```, ```whereis```, etc. It currently handles these builtins: ```exit```, ```env```,
-> ```setenv```, ```unsetenv```, and ```cd```. [To read more on how a shell works behind the scenes, visit our
-> blog here](https://medium.com/@MelissaNg__/how-a-shell-works-8a5a461c1910).
+> ```which```, ```whereis```, etc. We've also created the following builtins.
+
+## Builtins
+* ```exit``` exits shell
+* ```env``` prints environmental variables
+* ```setenv``` creates or modifies an environmental variable
+* ```unsetenv``` removes an envrionmental variable (Usage: ```unsetenv name value```)
+* ```cd``` changes directories (Usage: ```cd [-][~][path]```)
+
+## Functions and system calls used
+```read```, ```signal```, ```malloc```, ```free```, ```getcwd```, ```chdir```, ```access```, ```execve```, ```wait```, ```write```,  ```exit```
 
 ### Description of what each file shows:
 ```
@@ -86,12 +96,14 @@ $ ls
 yourfile.c yourprogram.o
 $ echo "This is a pretty cool!"
 This is pretty cool!
+$ man ./man_1_simple_shell (opens our manpage for more information)
 ```
 Stop and return to your original shell
 ```
 $ exit
 (your_terminal)$
 ```
+
 
 ### To Do
 * More functionality can still be added (e.g. handle aliases, pipelines, and redirections)
