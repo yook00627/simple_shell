@@ -20,12 +20,12 @@
 
 ### Synopsis
 > This repository holds all the code necessary for our custom simple shell to run.
-> Our shell currently handles the executions of shell builtins found in the
+> Our shell currently handles the executions of executables found in the
 > environmental variable PATH, with or without their full paths. Sample commands
 > that our shell supports include ```ls``` (```/bin/ls```), ```pwd```, ```echo```,
-> ```which```, ```whereis```, etc. It also handles the executions of ```exit```
-> ```env```. To read more on how a shell works behind the scenes, visit our
-> blog [here](https://medium.com/@MelissaNg__/how-a-shell-works-8a5a461c1910).
+> ```which```, ```whereis```, etc. It currently handles these builtins: ```exit```, ```env```,
+> ```setenv```, ```unsetenv```, and ```cd```. [To read more on how a shell works behind the scenes, visit our
+> blog here](https://medium.com/@MelissaNg__/how-a-shell-works-8a5a461c1910).
 
 ### Description of what each file shows:
 ```
@@ -70,6 +70,11 @@ Install and Compile
 (your_terminal)$ cd simple_shell
 (your_terminal)$ gcc -Wall -Werror -Wextra -pedantic -Wno-format *.c -o simple_shell
 ```
+**Non-Interactive Mode**
+```
+echo "ls -l" | ./simple_shell
+```
+**Interactive Mode***
 Activate the shell
 ```
 (your_terminal)$ ./simple_shell
@@ -89,12 +94,9 @@ $ exit
 ```
 
 ### To Do
-* More functionality can still be added (e.g. handle pipelines and redirections)
+* More functionality can still be added (e.g. handle aliases, pipelines, and redirections)
 
 ---
 ### Authors
 Kevin Yook [![M](https://upload.wikimedia.org/wikipedia/fr/thumb/c/c8/Twitter_Bird.svg/30px-Twitter_Bird.svg.png)](https://twitter.com/yook00627)
 Melissa Ng [![M](https://upload.wikimedia.org/wikipedia/fr/thumb/c/c8/Twitter_Bird.svg/30px-Twitter_Bird.svg.png)](https://twitter.com/MelissaNg__)
-
-### License
-[![M](https://www.holbertonschool.com/holberton-logo-simple-200s.png)](https://www.holbertonschool.com)
