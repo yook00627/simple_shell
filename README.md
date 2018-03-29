@@ -27,14 +27,14 @@
 > that our shell supports include ```ls``` (```/bin/ls```), ```pwd```, ```echo```,
 > ```which```, ```whereis```, etc. We've also created the following builtins.
 
-## Builtins
-* ```exit``` exits shell
-* ```env``` prints environmental variables
-* ```setenv``` creates or modifies an environmental variable
+### Builtins
+* ```exit``` exits shell (```Usage: exit [status]```)
+* ```env``` prints environmental variables (Usage: ```env```)
+* ```setenv``` creates or modifies an environmental variable (Usage: ```setenv name value```)
 * ```unsetenv``` removes an envrionmental variable (Usage: ```unsetenv name value```)
 * ```cd``` changes directories (Usage: ```cd [-][~][path]```)
 
-## Functions and system calls used
+### Functions and system calls used
 ```read```, ```signal```, ```malloc```, ```free```, ```getcwd```, ```chdir```, ```access```, ```execve```, ```wait```, ```write```,  ```exit```
 
 ### Description of what each file shows:
@@ -73,7 +73,7 @@ print_error.c ---------------------- prints special error messages for certain f
 * Compiler: gcc 4.8.4
 * Style guidelines: [Betty style](https://github.com/holbertonschool/Betty/wiki)
 
-### How To Install, Compile, and Use
+## How To Install, Compile, and Use
 Install and Compile
 ```
 (your_terminal)$ git clone https://github.com/MelissaN/simple_shell.git
@@ -92,8 +92,10 @@ $
 ```
 Sample Usage
 ```
-$ ls
-yourfile.c yourprogram.o
+$ ls -al
+total 4
+-rw-rw-r-- 1 vagrant vagrant   234 Mar 28 19:32 file1.c
+-rw-rw-r-- 1 vagrant vagrant    69 Mar 28 19:32 file2.c
 $ echo "This is a pretty cool!"
 This is pretty cool!
 $ man ./man_1_simple_shell (opens our manpage for more information)
